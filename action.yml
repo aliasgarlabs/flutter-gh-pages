@@ -22,6 +22,9 @@ inputs:
     description: 'Custom args like: --dart-define="simple=example"'
     required: false
     default:
+  copyAssets:
+    required: false
+    default: false
 
 runs:
   using: 'composite'
@@ -35,6 +38,10 @@ runs:
     - run: flutter build web --release --web-renderer=${{inputs.webRenderer}} ${{inputs.customArgs}}
       shell: bash
       working-directory: ${{inputs.workingDir}}
+   - run: cp -r assets build/web
+      shell: bash
+      working-directory: ${{inputs.workingDir}}
+      if: inputs.copyAssets == true
     - run: git config user.name github-actions
       shell: bash
       working-directory: ${{inputs.workingDir}}
